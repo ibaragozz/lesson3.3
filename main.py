@@ -21,9 +21,6 @@ target_y = random.randint(0, SCREEN_HEIGHT - target_height)
 
 color = (random.randint(0, 255), random.randint(0, 255), random.randint(0, 255))
 
-
-
-
 running = True
 while running:
     screen.fill(color)
@@ -36,10 +33,6 @@ while running:
                 target_x = random.randint(0, SCREEN_WIDTH - target_width)
                 target_y = random.randint(0, SCREEN_HEIGHT - target_height)
                 color = (random.randint(0, 255), random.randint(0, 255), random.randint(0, 255))
-
-
-
-
 
     screen.blit(target_image, (target_x, target_y))
     pygame.display.update()
