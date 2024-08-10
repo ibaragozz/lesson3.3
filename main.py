@@ -8,7 +8,7 @@ SCREEN_WIDTH = 800
 SCREEN_HEIGHT = 600
 screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
 
-pygame.display.set_caption("Инопланетная атака")
+pygame.display.set_caption("Инопланетная охота")
 icon = pygame.image.load('img/icon.png')
 pygame.display.set_icon(icon)
 
@@ -32,9 +32,21 @@ max_misses = 3
 # Шрифт для отображения счета и промахов
 font = pygame.font.Font(None, 36)
 
+# Время последнего перемещения цели
+last_move_time = pygame.time.get_ticks()
+move_interval = 1000  # интервал перемещения цели в миллисекундах (1 секунда)
+
 running = True
 while running:
     screen.fill(color)
+    current_time = pygame.time.get_ticks()
+
+    # Перемещаем цель через каждый move_interval
+    if current_time - last_move_time > move_interval:
+        target_x = random.randint(0, SCREEN_WIDTH - target_width)
+        target_y = random.randint(0, SCREEN_HEIGHT - target_height)
+        last_move_time = current_time
+
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False
@@ -63,11 +75,17 @@ while running:
 
     pygame.display.update()
 
-# Вывод сообщения об окончании игры
+# Вывод сообщения об окончании игры с финальным счетом
 end_font = pygame.font.Font(None, 72)
 end_text = end_font.render("Игре конец!", True, (255, 0, 0))
+final_score_text = end_font.render(f"Было сбито {hits} тарелок!", True, (255, 255, 255))
+
 screen.fill((0, 0, 0))
-screen.blit(end_text, (SCREEN_WIDTH // 2 - end_text.get_width() // 2, SCREEN_HEIGHT // 2 - end_text.get_height() // 2))
+screen.blit(end_text,
+            (SCREEN_WIDTH // 2 - end_text.get_width() // 2, SCREEN_HEIGHT // 2 - end_text.get_height() // 2 - 40))
+screen.blit(final_score_text, (
+SCREEN_WIDTH // 2 - final_score_text.get_width() // 2, SCREEN_HEIGHT // 2 - final_score_text.get_height() // 2 + 40))
+
 pygame.display.update()
 pygame.time.wait(3000)  # Ожидание перед закрытием
 
